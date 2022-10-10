@@ -21,6 +21,8 @@ class AppTest(unittest.TestCase):
         driver.set_script_timeout(5)
         driver.get(application_URL)
 
+        self.assertIn("No results found.", driver.page_source)
+
         elem = driver.find_element(By.NAME, "name")
         elem.send_keys("luka")
         elem = driver.find_element(By.NAME, "animal")
@@ -28,6 +30,8 @@ class AppTest(unittest.TestCase):
         elem.send_keys(Keys.RETURN)
 
         self.assertNotIn("No results found.", driver.page_source)
+        self.assertNotIn("luka", driver.page_source)
+        self.assertNotIn("dog", driver.page_source)
 
         driver.quit()
 
