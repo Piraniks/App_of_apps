@@ -30,8 +30,8 @@ class AppTest(unittest.TestCase):
         elem.send_keys(Keys.RETURN)
 
         self.assertNotIn("No results found.", driver.page_source)
-        self.assertNotIn("luka", driver.page_source)
-        self.assertNotIn("dog", driver.page_source)
+        self.assertIn("luka", driver.page_source)
+        self.assertIn("dog", driver.page_source)
 
         driver.quit()
 
