@@ -58,27 +58,27 @@ pipeline {
                 sh "python3 -m pytest test/selenium/dummy_frontend_test.py"
             }
         }
-        // stage('Run terraform') {
-        //     steps {
-        //         dir('Terraform') {                
-        //             git branch: 'master', url: 'https://github.com/Piraniks/Terraform'
-        //             withAWS(credentials:'AWS_credentials', region: 'us-east-1') {
-        //                     sh 'terraform init && terraform apply -auto-approve -var-file="terraform.tfvars"'
-        //             } 
-        //         }
-        //     }
-        // }
-        // stage('Run Ansible') {
-        //        steps {
-        //            script {
-        //                 sh "ansible-galaxy install -r requirements.yml"
-        //                 withEnv(["FRONTEND_IMAGE=$frontendImage:$frontendDockerTag", 
-        //                          "BACKEND_IMAGE=$backendImage:$backendDockerTag"]) {
-        //                     ansiblePlaybook inventory: 'inventory', playbook: 'playbook.yml'
-        //                 }
-        //         }
-        //     }
-        // }
+        stage('Run terraform') {
+            steps {
+                dir('Terraform') {                
+                    git branch: 'master', url: 'https://github.com/Piraniks/Terraform'
+                    withAWS(credentials:'AWS_credentials', region: 'us-east-1') {
+                            sh 'terraform init && terraform apply -auto-approve -var-file="terraform.tfvars"'
+                    } 
+                }
+            }
+        }
+        stage('Run Ansible') {
+               steps {
+                   script {
+                        sh "ansible-galaxy install -r requirements.yml"
+                        withEnv(["FRONTEND_IMAGE=$frontendImage:$frontendDockerTag", 
+                                 "BACKEND_IMAGE=$backendImage:$backendDockerTag"]) {
+                            ansiblePlaybook inventory: 'inventory', playbook: 'playbook.yml'
+                        }
+                }
+            }
+        }
 	}
     post {
         always {
