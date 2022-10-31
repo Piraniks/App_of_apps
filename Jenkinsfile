@@ -64,7 +64,7 @@ pipeline {
                     git branch: 'master', url: 'https://github.com/Piraniks/Terraform'
                     withAWS(credentials:'AWS_credentials', region: 'us-east-1') {
                             sh 'terraform init && terraform apply -auto-approve -var-file="terraform.tfvars"'
-                    } 
+                    }
                 }
             }
         }
